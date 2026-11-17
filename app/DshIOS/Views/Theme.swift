@@ -3,22 +3,40 @@ import SwiftUI
 /// Design tokens (docs/design/README.md §3). Each is a Color Set in
 /// Assets.xcassets with a light and a dark value; views use only these names.
 enum Palette {
-    static let background = Color("Background")
-    static let ink = Color("Ink")
+    /// 皮肤：standard 用资源里的中性黑白，paper 是纸墨（暖纸底 + 墨字）。切换在下次启动生效。
+    enum Skin: String {
+        case standard
+        case paper
+    }
+
+    static var skinChoice: Skin {
+        get { Skin(rawValue: UserDefaults.standard.string(forKey: "xidai.skin") ?? "") ?? .standard }
+        set { UserDefaults.standard.set(newValue.rawValue, forKey: "xidai.skin") }
+    }
+
+    private static func themed(_ asset: String, _ light: String, _ dark: String) -> Color {
+        guard skinChoice == .paper else { return Color(asset) }
+        return Color(uiColor: UIColor { traits in
+            traits.userInterfaceStyle == .dark ? UIColor(hexString: dark) : UIColor(hexString: light)
+        })
+    }
+
+    static var background: Color { themed("Background", "F6F1E8", "1A1815") }
+    static var ink: Color { themed("Ink", "1C1A17", "EFE9DE") }
     /// Links in replies: the system's link blue, in both appearances.
     static let link = Color(uiColor: .link)
-    static let onInk = Color("OnInk")
-    static let secondary = Color("TextSecondary")
-    static let faint = Color("TextFaint")
+    static var onInk: Color { themed("OnInk", "FFFDF9", "12100E") }
+    static var secondary: Color { themed("TextSecondary", "5F594F", "A39C90") }
+    static var faint: Color { themed("TextFaint", "8C857A", "776F64") }
     /// Composer and command blocks.
-    static let field = Color("Field")
+    static var field: Color { themed("Field", "F1EBDF", "211E1A") }
     /// Grouped lists and the terminal.
-    static let grouped = Color("Grouped")
+    static var grouped: Color { themed("Grouped", "F3EEE4", "1F1C18") }
     /// User bubbles, the search field, the selected row.
-    static let bubble = Color("Bubble")
+    static var bubble: Color { themed("Bubble", "E9E2D4", "2C2823") }
     /// Secondary buttons (reject, restart).
-    static let control = Color("Control")
-    static let stroke = Color("Stroke")
+    static var control: Color { themed("Control", "EEE7DA", "262220") }
+    static var stroke: Color { themed("Stroke", "DED5C4", "35302A") }
     static let running = Color("StatusRunning")
     static let waiting = Color("StatusWaiting")
     static let addedBackground = Color("DiffAddBackground")
@@ -27,6 +45,22 @@ enum Palette {
     static let removed = Color("DiffDeleteText")
     static let scrim = Color("Scrim")
 }
+
+extension UIColor {
+    convenience init(hexString: String) {
+        var text = hexString
+        if text.hasPrefix("#") { text.removeFirst() }
+        var value: UInt64 = 0
+        Scanner(string: text).scanHexInt64(&value)
+        self.init(
+            red: CGFloat((value >> 16) & 0xFF) / 255,
+            green: CGFloat((value >> 8) & 0xFF) / 255,
+            blue: CGFloat(value & 0xFF) / 255,
+            alpha: 1
+        )
+    }
+}
+
 
 /// The appearance choice lives in the engine (`ui-theme.preference`, shared with the web and
 /// desktop clients). The app keeps the last value it read, because the screens shown while
