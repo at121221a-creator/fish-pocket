@@ -32,7 +32,7 @@ settings:
     SWIFT_EMIT_LOC_STRINGS: YES
     LOCALIZATION_PREFERS_STRING_CATALOGS: YES
     # The container the app and the widget extension share (widget snapshot). Rename it with the bundle ID.
-    DSH_APP_GROUP: group.com.wsw.dsh-ios
+    DSH_APP_GROUP: group.app.xidai.dsh
     # The app's link scheme (Shared/DshLink.swift): the widgets and the share extension open the app with it.
     # A side-by-side test build takes its own, or its links can land in the installed app.
     DSH_URL_SCHEME: dsh
@@ -132,7 +132,7 @@ targets:
       - package: SwiftTerm
       - package: SwiftMath
       - target: DshLiveActivity
-      # 系统分享面板里的 Fish Pocket：别的 App 分享的内容进新对话或某个 Bot 的输入框。
+      # 系统分享面板里的 犀袋：别的 App 分享的内容进新对话或某个 Bot 的输入框。
       - target: DshShare
       # The watch app rides inside the iPhone app and is installed with it.
       - target: DshWatch
@@ -151,7 +151,7 @@ targets:
     info:
       path: DshIOS/Info.plist
       properties:
-        CFBundleDisplayName: Fish Pocket
+        CFBundleDisplayName: 犀袋
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         # The fallback when none of the reader's languages is translated: English, not the Chinese source.
@@ -222,9 +222,9 @@ targets:
         NSSupportsLiveActivities: true
         # dsh://session/<id> and dsh://new: the Live Activity and the widgets (Shared/DshLink.swift).
         CFBundleURLTypes:
-          - CFBundleURLName: com.wsw.dsh-ios
+          - CFBundleURLName: app.xidai.dsh
             CFBundleURLSchemes: ["$(DSH_URL_SCHEME)"]
-        # Fish Pocket credits (FishPocketAPI): the service's https origin; empty hides the feature.
+        # 犀袋 credits (FishPocketAPI): the service's https origin; empty hides the feature.
         FishPocketAPIURL: $(FISH_POCKET_API_URL)
         # Shared/WidgetSnapshot.swift reads the group from here.
         DshAppGroup: $(DSH_APP_GROUP)
@@ -237,7 +237,7 @@ targets:
       path: DshIOS/DshIOS.entitlements
       properties:
         com.apple.security.application-groups: ["$(DSH_APP_GROUP)"]
-        # Sign in with Apple (Fish Pocket accounts).
+        # Sign in with Apple (犀袋 accounts).
         com.apple.developer.applesignin: [Default]
         # 本机能力「健康」。只读：写健康数据责任太大，而且「不得写入虚假数据」
         # 是硬条款（docs/native-services.md §3、§6.1）。
@@ -247,8 +247,8 @@ targets:
         com.apple.developer.homekit: true
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.wsw.dsh-ios
-        # The Fish Pocket API origin (https://…). Empty in source builds: forks and local
+        PRODUCT_BUNDLE_IDENTIFIER: app.xidai.dsh
+        # The 犀袋 API origin (https://…). Empty in source builds: forks and local
         # builds run without the service; the release build sets it.
         FISH_POCKET_API_URL: ""
         # Design tokens (docs/design/README.md §3) live in Assets.xcassets; the accent is the ink colour.
@@ -272,7 +272,7 @@ targets:
         headerVisibility: public
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.wsw.dsh-ios.root
+        PRODUCT_BUNDLE_IDENTIFIER: app.xidai.dsh.root
         GENERATE_INFOPLIST_FILE: YES
         DEFINES_MODULE: NO
         SKIP_INSTALL: YES
@@ -288,7 +288,7 @@ targets:
     info:
       path: LiveActivity/Info.plist
       properties:
-        CFBundleDisplayName: Fish Pocket
+        CFBundleDisplayName: 犀袋
         CFBundleDevelopmentRegion: en
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
@@ -307,7 +307,7 @@ targets:
         com.apple.security.application-groups: ["$(DSH_APP_GROUP)"]
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.wsw.dsh-ios.LiveActivity
+        PRODUCT_BUNDLE_IDENTIFIER: app.xidai.dsh.LiveActivity
   # The share extension: what another app shares (text, links, pictures, files) is copied into
   # the App Group container and the app is opened on the composer it goes to (Shared/ShareInbox.swift).
   # No engine here: nothing is sent from the extension.
@@ -323,7 +323,7 @@ targets:
     info:
       path: ShareExtension/Info.plist
       properties:
-        CFBundleDisplayName: Fish Pocket
+        CFBundleDisplayName: 犀袋
         CFBundleDevelopmentRegion: en
         CFBundleLocalizations: [zh-Hans, zh-Hant, en, es, ja, ko]
         CFBundleShortVersionString: $(MARKETING_VERSION)
@@ -351,7 +351,7 @@ targets:
         com.apple.security.application-groups: ["$(DSH_APP_GROUP)"]
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.wsw.dsh-ios.Share
+        PRODUCT_BUNDLE_IDENTIFIER: app.xidai.dsh.Share
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
   # The watch app: draws the snapshot the phone sends over WatchConnectivity (DshIOS/WatchLink.swift)
   # and sends back approvals and 「继续」. No engine, no network of its own.
@@ -366,17 +366,17 @@ targets:
     info:
       path: Watch/Info.plist
       properties:
-        CFBundleDisplayName: Fish Pocket
+        CFBundleDisplayName: 犀袋
         CFBundleDevelopmentRegion: en
         CFBundleLocalizations: [zh-Hans, zh-Hant, en, es, ja, ko]
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         WKApplication: true
-        WKCompanionAppBundleIdentifier: com.wsw.dsh-ios
+        WKCompanionAppBundleIdentifier: app.xidai.dsh
     settings:
       base:
         # Must start with the iPhone app's bundle ID.
-        PRODUCT_BUNDLE_IDENTIFIER: com.wsw.dsh-ios.watchkitapp
+        PRODUCT_BUNDLE_IDENTIFIER: app.xidai.dsh.watchkitapp
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         # Archived inside the iPhone app, not as a product of its own.
