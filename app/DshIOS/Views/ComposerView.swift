@@ -264,6 +264,12 @@ struct ComposerView: View {
             if let trigger {
                 CandidatePanel(model: model, context: context, hit: trigger, pick: { pick($0, over: trigger) }, showAll: { refocus = true; browsing = trigger })
             }
+            if trigger == nil, composer.text.isEmpty, !QuickCommandStore.shared.items.isEmpty {
+                QuickCommandBar { text in
+                    composer.text = text
+                    refocus = true
+                }
+            }
             field
                 // While held, the bar's own fill over the surface: the waveform's ink, red to cancel.
                 .background {
