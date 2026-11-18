@@ -264,7 +264,7 @@ struct ComposerView: View {
             if let trigger {
                 CandidatePanel(model: model, context: context, hit: trigger, pick: { pick($0, over: trigger) }, showAll: { refocus = true; browsing = trigger })
             }
-            if trigger == nil, composer.text.isEmpty, !QuickCommandStore.shared.items.isEmpty {
+            if trigger == nil, focused, composer.text.isEmpty, !QuickCommandStore.shared.items.isEmpty {
                 QuickCommandBar { text in
                     composer.text = text
                     refocus = true
