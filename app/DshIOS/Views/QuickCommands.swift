@@ -69,12 +69,12 @@ struct QuickCommandBar: View {
                         insert(command.text)
                     } label: {
                         Text(Self.label(command.text))
-                            .font(.caption)
+                            .font(.caption2)
                             .lineLimit(1)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 5)
-                            .background(Capsule().fill(Palette.bubble))
-                            .foregroundStyle(Palette.ink)
+                            .padding(.horizontal, 9)
+                            .padding(.vertical, 4)
+                            .background(Capsule().fill(Palette.bubble.opacity(0.65)))
+                            .foregroundStyle(Palette.secondary)
                     }
                     .buttonStyle(.plain)
                 }
