@@ -136,15 +136,6 @@ struct SettingsView: View {
                 .onChange(of: widgetTitles) { WidgetSnapshotWriter.shared.refresh() }
 
                 Section {
-                    Picker(selection: Binding(get: { Palette.skinChoice.rawValue }, set: { value in
-                        Palette.skinChoice = Palette.Skin(rawValue: value) ?? .standard
-                    })) {
-                        Text("标准").tag(Palette.Skin.standard.rawValue)
-                        Text("纸墨").tag(Palette.Skin.paper.rawValue)
-                    } label: {
-                        Label("皮肤", systemImage: "paintpalette")
-                    }
-                    .pickerValueTint()
                     if let theme = mirror.namespace("ui-theme") {
                         Picker(selection: Binding(get: { theme["value"]["preference"].string ?? "system" }, set: { value in
                             Task { await write("ui-theme", ["preference"], .string(value)) }
