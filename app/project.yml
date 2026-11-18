@@ -132,7 +132,7 @@ targets:
       - package: SwiftTerm
       - package: SwiftMath
       - target: DshLiveActivity
-      # 系统分享面板里的 犀袋：别的 App 分享的内容进新对话或某个 Bot 的输入框。
+      # 系统分享面板里的 Kumo：别的 App 分享的内容进新对话或某个 Bot 的输入框。
       - target: DshShare
       # The watch app rides inside the iPhone app and is installed with it.
       - target: DshWatch
@@ -151,7 +151,7 @@ targets:
     info:
       path: DshIOS/Info.plist
       properties:
-        CFBundleDisplayName: 犀袋
+        CFBundleDisplayName: Kumo
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         # The fallback when none of the reader's languages is translated: English, not the Chinese source.
@@ -224,7 +224,7 @@ targets:
         CFBundleURLTypes:
           - CFBundleURLName: app.xidai.dsh
             CFBundleURLSchemes: ["$(DSH_URL_SCHEME)"]
-        # 犀袋 credits (FishPocketAPI): the service's https origin; empty hides the feature.
+        # Kumo credits (FishPocketAPI): the service's https origin; empty hides the feature.
         FishPocketAPIURL: $(FISH_POCKET_API_URL)
         # Shared/WidgetSnapshot.swift reads the group from here.
         DshAppGroup: $(DSH_APP_GROUP)
@@ -237,7 +237,7 @@ targets:
       path: DshIOS/DshIOS.entitlements
       properties:
         com.apple.security.application-groups: ["$(DSH_APP_GROUP)"]
-        # Sign in with Apple (犀袋 accounts).
+        # Sign in with Apple (Kumo accounts).
         com.apple.developer.applesignin: [Default]
         # 本机能力「健康」。只读：写健康数据责任太大，而且「不得写入虚假数据」
         # 是硬条款（docs/native-services.md §3、§6.1）。
@@ -248,7 +248,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.xidai.dsh
-        # The 犀袋 API origin (https://…). Empty in source builds: forks and local
+        # The Kumo API origin (https://…). Empty in source builds: forks and local
         # builds run without the service; the release build sets it.
         FISH_POCKET_API_URL: ""
         # Design tokens (docs/design/README.md §3) live in Assets.xcassets; the accent is the ink colour.
@@ -288,7 +288,7 @@ targets:
     info:
       path: LiveActivity/Info.plist
       properties:
-        CFBundleDisplayName: 犀袋
+        CFBundleDisplayName: Kumo
         CFBundleDevelopmentRegion: en
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
@@ -323,7 +323,7 @@ targets:
     info:
       path: ShareExtension/Info.plist
       properties:
-        CFBundleDisplayName: 犀袋
+        CFBundleDisplayName: Kumo
         CFBundleDevelopmentRegion: en
         CFBundleLocalizations: [zh-Hans, zh-Hant, en, es, ja, ko]
         CFBundleShortVersionString: $(MARKETING_VERSION)
@@ -366,7 +366,7 @@ targets:
     info:
       path: Watch/Info.plist
       properties:
-        CFBundleDisplayName: 犀袋
+        CFBundleDisplayName: Kumo
         CFBundleDevelopmentRegion: en
         CFBundleLocalizations: [zh-Hans, zh-Hant, en, es, ja, ko]
         CFBundleShortVersionString: $(MARKETING_VERSION)
