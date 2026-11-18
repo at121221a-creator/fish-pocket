@@ -87,6 +87,9 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    NavigationLink { QuickCommandSettingsPage() } label: {
+                        row("快捷指令", "bolt.fill", String(localized: "\(QuickCommandStore.shared.items.count) 条"))
+                    }
                     NavigationLink { PluginsView() } label: {
                         row("插件", "puzzlepiece.extension", pluginCount.map { String(localized: "\($0) 个") } ?? "")
                     }
