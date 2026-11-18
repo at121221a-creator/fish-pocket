@@ -8,6 +8,7 @@ struct UsageBall: View {
     @AppStorage("xidai.ball.hidden") private var hidden = false
     @AppStorage("xidai.ball.dx") private var dx: Double = 0
     @AppStorage("xidai.ball.dy") private var dy: Double = 0
+    @AppStorage("xidai.ball.window") private var windowMode = false
 
     @State private var drag: CGSize = .zero
     @State private var expanded = false
@@ -30,7 +31,20 @@ struct UsageBall: View {
             EmptyView()
         } else {
             VStack(alignment: .trailing, spacing: 8) {
-                if expanded { panel }
+                if windowMode {
+                    window
+                        .offset(x: dx + drag.width, y: dy + drag.height)
+                        .gesture(
+                            DragGesture(minimumDistance: 6)
+                                .onChanged { value in drag = value.translation }
+                                .onEnded { value in
+                                    dx += value.translation.width
+                                    dy += value.translation.height
+                                    drag = .zero
+                                }
+                        )
+                } else if expanded { panel }
+                if !windowMode {
                 bubble
                     .offset(x: dx + drag.width, y: dy + drag.height)
                     .gesture(
@@ -46,11 +60,57 @@ struct UsageBall: View {
                     .onLongPressGesture(minimumDuration: 0.5) {
                         withAnimation(.snappy(duration: 0.18)) { hidden = true }
                     }
+                }
             }
             .padding(.trailing, 16)
             .padding(.top, 96)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
         }
+    }
+
+    /// 摊开的窗口：一直显示明细，拖哪儿放哪儿，右上角能收回小球或关掉。
+    private var window: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 6) {
+                Text("本场用量")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(Palette.ink)
+                Spacer(minLength: 8)
+                Button {
+                    withAnimation(.snappy(duration: 0.18)) { windowMode = false }
+                } label: {
+                    Image(systemName: "circle.dashed")
+                        .font(.system(size: 11))
+                        .foregroundStyle(Palette.secondary)
+                }
+                .buttonStyle(.plain)
+                Button {
+                    withAnimation(.snappy(duration: 0.18)) { hidden = true }
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(Palette.secondary)
+                }
+                .buttonStyle(.plain)
+            }
+            line("输入", short(input))
+            line("其中缓存", short(cache))
+            line("输出", short(output))
+            if let context = model.contextTokens {
+                line("上下文", short(context))
+            }
+            Rectangle().fill(Palette.stroke).frame(height: 1).padding(.vertical, 2)
+            HStack(spacing: 4) {
+                Text("约").foregroundStyle(Palette.secondary)
+                Text(money(cost)).foregroundStyle(Palette.ink)
+            }
+            .font(.system(size: 11, weight: .semibold))
+        }
+        .padding(11)
+        .frame(width: 158, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(.regularMaterial))
+        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).strokeBorder(Palette.stroke, lineWidth: 1))
+        .shadow(color: .black.opacity(0.12), radius: 12, y: 4)
     }
 
     private var bubble: some View {
