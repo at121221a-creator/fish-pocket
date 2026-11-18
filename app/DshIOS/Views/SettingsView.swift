@@ -145,17 +145,6 @@ struct SettingsView: View {
                         Label("皮肤", systemImage: "paintpalette")
                     }
                     .pickerValueTint()
-                    Toggle(isOn: Binding(get: { !UserDefaults.standard.bool(forKey: "xidai.ball.hidden") }, set: { UserDefaults.standard.set(!$0, forKey: "xidai.ball.hidden") })) {
-                        Label("显示用量", systemImage: "circle.dotted")
-                    }
-                    .toggleStyle(.mono)
-                    Picker(selection: Binding(get: { UserDefaults.standard.bool(forKey: "xidai.ball.window") }, set: { UserDefaults.standard.set($0, forKey: "xidai.ball.window") })) {
-                        Text("小球").tag(false)
-                        Text("窗口").tag(true)
-                    } label: {
-                        Label("用量样式", systemImage: "square.on.circle")
-                    }
-                    .pickerValueTint()
                     if let theme = mirror.namespace("ui-theme") {
                         Picker(selection: Binding(get: { theme["value"]["preference"].string ?? "system" }, set: { value in
                             Task { await write("ui-theme", ["preference"], .string(value)) }
@@ -184,6 +173,24 @@ struct SettingsView: View {
                         AppLanguage.chosen = value == "system" ? nil : value
                         languageChanged = true
                     }
+                }
+
+                Section {
+                    Toggle(isOn: Binding(get: { !UserDefaults.standard.bool(forKey: "xidai.ball.hidden") }, set: { UserDefaults.standard.set(!$0, forKey: "xidai.ball.hidden") })) {
+                        Label("显示用量", systemImage: "circle.dotted")
+                    }
+                    .toggleStyle(.mono)
+                    Picker(selection: Binding(get: { UserDefaults.standard.bool(forKey: "xidai.ball.window") }, set: { UserDefaults.standard.set($0, forKey: "xidai.ball.window") })) {
+                        Text("小球").tag(false)
+                        Text("窗口").tag(true)
+                    } label: {
+                        Label("用量样式", systemImage: "square.on.circle")
+                    }
+                    .pickerValueTint()
+                } header: {
+                    Text("用量")
+                } footer: {
+                    Text("对话里那颗球显示本场消耗的 token 和大致花费。点开看明细，长按隐藏。")
                 }
 
                 Section {
