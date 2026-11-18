@@ -145,6 +145,10 @@ struct SettingsView: View {
                         Label("皮肤", systemImage: "paintpalette")
                     }
                     .pickerValueTint()
+                    Toggle(isOn: Binding(get: { !UserDefaults.standard.bool(forKey: "xidai.ball.hidden") }, set: { UserDefaults.standard.set(!$0, forKey: "xidai.ball.hidden") })) {
+                        Label("显示用量球", systemImage: "circle.dotted")
+                    }
+                    .toggleStyle(.mono)
                     if let theme = mirror.namespace("ui-theme") {
                         Picker(selection: Binding(get: { theme["value"]["preference"].string ?? "system" }, set: { value in
                             Task { await write("ui-theme", ["preference"], .string(value)) }
