@@ -171,13 +171,6 @@ struct SettingsView: View {
                         Label("显示用量", systemImage: "circle.dotted")
                     }
                     .toggleStyle(.mono)
-                    Picker(selection: Binding(get: { UserDefaults.standard.bool(forKey: "xidai.ball.window") }, set: { UserDefaults.standard.set($0, forKey: "xidai.ball.window") })) {
-                        Text("小球").tag(false)
-                        Text("窗口").tag(true)
-                    } label: {
-                        Label("用量样式", systemImage: "square.on.circle")
-                    }
-                    .pickerValueTint()
                 } header: {
                     Text("用量")
                 } footer: {
